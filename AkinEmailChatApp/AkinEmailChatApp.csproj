@@ -18,5 +18,8 @@
     <ItemGroup>
       <Folder Include="Views\Pages" />
     </ItemGroup>
-
+    
+    <Target Name="CopyAppsettingsAfterPublish" AfterTargets="Publish">
+        <Copy SourceFiles="appsettings.json" DestinationFolder="$(PublishDir)" />
+    </Target>
 </Project>

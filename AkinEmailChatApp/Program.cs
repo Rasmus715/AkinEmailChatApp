@@ -18,7 +18,7 @@ builder.Services.AddDataProtection().UseCryptographicAlgorithms(
         ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
     });
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql("Host=212.192.31.98;Port=5432;Username=postgres;Password=password;Database=AkinChatDb"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IAccountService, AccountService>();
