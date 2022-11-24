@@ -1,0 +1,107 @@
+﻿@model IEnumerable<AkinEmailChatApp.ViewModels.MessageViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    <title>Messages</title>
+     
+</head>
+<h1>Messaging Hub</h1>
+<div id="status" class="col-xs-6 d-flex" style="font-weight:bold">
+</div>
+<style>
+    tr[data-clickable] {
+    cursor: pointer;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <input hidden="hidden" id="senderInput" value="@User.Identity!.Name"/>
+        <div class="form-group">
+            <label class="control-label">Recipient</label>
+            <input class="form-control" id="receiverInput" name="receiverInput"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Title</label>
+            <input class="form-control" id="titleInput">
+        </div>
+        <div class="form-group">
+            <label class="control-label">Body</label>
+            <textarea class="form-control" id="messageInput"></textarea>
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="button" id="sendButton" value="Send Message" class="btn btn-primary"/>
+            @*<input type="submit" id="submit" value="Create" class="btn btn-primary"/>*@
+        </div>
+        </div>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th hidden>
+            @Html.DisplayNameFor(model => model.Body)
+        </th>
+    </tr>
+    </thead>
+    <tbody id="dataRows">
+    @foreach (var item in Model) {
+        <tr data-clickable>
+            <td>
+                @Html.DisplayFor(model => item.Timestamp)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Sender)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Title)
+            </td>
+        </tr>
+        <tr style="display:none;">
+            <td colspan="3" style="border:none;">
+                <label class="form-control">
+                    @Html.DisplayFor(model => item.Body)
+                </label>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="~/js/signalr/signalr.js"></script>
+    <script src="~/js/chatReceiver.js"></script>
+    <script>
+ 
+ $(function () {
+     $('#receiverInput').autocomplete({
+              source: '/Message/AutoCompleteUsers',
+              minLength: 3
+            });
+     });
+ 
+
+     $(document).ready(function (){
+            $(document.body).on("click", "tr[data-clickable]", function (event){
+                var tbl = $( "#dataRows" );
+                var rows = $('tr', tbl);
+                rows.eq(event.target.parentNode.rowIndex).toggle();
+            })
+        })
+</script>
+}

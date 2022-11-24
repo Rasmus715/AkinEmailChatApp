@@ -1,0 +1,8 @@
+@using System.Security.Claims
+@{
+    Layout = Context.User.FindFirstValue(ClaimsIdentity.DefaultRoleClaimType) switch
+    {
+        "User" => "~/Views/Shared/_LayoutUser.cshtml",
+        _ => "~/Views/Shared/_DefaultLayout.cshtml"
+        };
+}
